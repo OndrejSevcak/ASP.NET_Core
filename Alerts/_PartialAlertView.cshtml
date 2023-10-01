@@ -1,0 +1,34 @@
+@using System.Text.Json; 
+@{
+    List<AlertModel> alerts = new List<AlertModel>();
+
+    if(TempData["Alerts"] != null)
+    {
+        try
+        {
+            alerts = JsonSerializer.Deserialize<List<AlertModel>>(TempData["Alerts"].ToString());
+        }
+        catch { }
+
+    }
+}
+
+@*//Alerts container*@
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index:1000;">
+    @foreach (var alert in alerts)
+    {
+        <div class="alert alert-@alert.Type alert-dismissible fade show" role="alert">
+            @alert.Message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+
+    //Auto close alerts
+    window.setTimeout(function () {
+        $(".alert:not(.permanent-alert)").alert("close");
+    }, 3000); 
+
+</script>
